@@ -98,5 +98,16 @@ RSpec.describe Que::Scheduler::DefinedJob do
         )
       end.to raise_error(/Invalid job_class 'NotAQueJob' in que-scheduler schedule/)
     end
+
+    it 'allows subclasses of ActiveJob::Base as job_class' do
+      expect do
+        described_class.new(
+          name: 'using_active_job',
+          job_class: 'SomeActiveJob',
+          cron: '* * * * *'
+        )
+      end.not_to raise_error
+    end
+
   end
 end

@@ -16,7 +16,8 @@ module Que
       property :name, required: true
       property :job_class, required: true, transform_with: lambda { |v|
         job_class = Object.const_get(v)
-        job_class < Que::Job ? job_class : err_field(:job_class, v)
+        is_active_job = defined?(ActiveJob::Base) && job_class < ActiveJob::Base
+        job_class < Que::Job || is_active_job ? job_class : err_field(:job_class, v)
       }
       property :cron, required: true, transform_with: lambda { |v|
         Fugit::Cron.parse(v) || err_field(:cron, v)

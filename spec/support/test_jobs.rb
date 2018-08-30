@@ -25,3 +25,12 @@ end
 class NotAQueJob
   def run; end
 end
+
+module ActiveJob
+  class Base
+  end
+end
+
+class SomeActiveJob < ActiveJob::Base
+  def perform; end
+end
